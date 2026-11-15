@@ -1,0 +1,47 @@
+.gt-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.gt-table-row {
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.gt-table-row:hover {
+    background-color: #f1f8e9;
+}
+
+.gt-ticket-id {
+    color: #1b5e20;
+    font-weight: 700;
+}
+
+.gt-ticket-title {
+    max-width: 180px;
+}
+
+.gt-badge-critical {
+    background-color: #ffebee;
+    color: #c62828;
+    font-weight: 700;
+}
+
+.gt-badge-high {
+    background-color: #fff3e0;
+    color: #ef6c00;
+    font-weight: 600;
+}
+
+.gt-badge-medium {
+    background-color: #e3f2fd;
+    color: #1565c0;
+    font-weight: 500;
+}
+
+.gt-badge-low {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    font-weight: 500;
+}

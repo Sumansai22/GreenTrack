@@ -1,0 +1,64 @@
+<template>
+    <div class="greentrack-container">
+        <!-- Header Banner -->
+        <header class="gt-header slds-p-around_medium slds-m-bottom_medium">
+            <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread">
+                <div class="slds-media slds-media_center">
+                    <div class="slds-media__figure">
+                        <span class="gt-brand-icon">🌿</span>
+                    </div>
+                    <div class="slds-media__body">
+                        <h1 class="slds-text-heading_medium gt-app-title">GreenTrack</h1>
+                        <p class="slds-text-body_small gt-app-subtitle">Smart Waste Management & Sustainability Platform</p>
+                    </div>
+                </div>
+                <div class="gt-header-actions slds-grid slds-grid_vertical-align-center">
+                    <lightning-badge label="Municipal Cloud Active" class="gt-status-badge slds-m-right_small"></lightning-badge>
+                    <lightning-button variant="brand" label="Report Waste Issue" icon-name="utility:add" onclick={handleNewComplaintClick}></lightning-button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <lightning-tabset variant="scoped" active-tab-value={activeTab}>
+            <lightning-tab label="Command Center" value="overview" icon-name="standard:dashboard">
+                <c-admin-overview onnavigate={handleNavigate}></c-admin-overview>
+            </lightning-tab>
+            
+            <lightning-tab label="Complaints Portal" value="complaints" icon-name="standard:case">
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_7-of-12">
+                        <c-complaint-list onselectcomplaint={handleSelectComplaint}></c-complaint-list>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_5-of-12">
+                        <c-complaint-details complaint-id={selectedComplaintId} oncomplaintupdated={handleComplaintUpdated}></c-complaint-details>
+                    </div>
+                </div>
+            </lightning-tab>
+
+            <lightning-tab label="Report Issue" value="new_report" icon-name="utility:new">
+                <c-complaint-registration oncomplaintsubmitted={handleComplaintSubmitted}></c-complaint-registration>
+            </lightning-tab>
+
+            <lightning-tab label="Team Dispatch" value="dispatch" icon-name="standard:team_member">
+                <c-team-assignment></c-team-assignment>
+            </lightning-tab>
+
+            <lightning-tab label="Cleaning Workers" value="workers" icon-name="standard:contact">
+                <c-worker-management></c-worker-management>
+            </lightning-tab>
+
+            <lightning-tab label="Bulk Recycling" value="recycling" icon-name="standard:channel_program_levels">
+                <c-recycling-management></c-recycling-management>
+            </lightning-tab>
+
+            <lightning-tab label="Hotspot Matrix" value="hotspots" icon-name="standard:location">
+                <c-waste-hotspot-dashboard></c-waste-hotspot-dashboard>
+            </lightning-tab>
+
+            <lightning-tab label="Sustainability KPI" value="analytics" icon-name="standard:report">
+                <c-sustainability-analytics></c-sustainability-analytics>
+            </lightning-tab>
+        </lightning-tabset>
+    </div>
+</template>

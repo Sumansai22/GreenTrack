@@ -1,0 +1,22 @@
+.gt-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.gt-metric-large {
+    font-size: 2.8rem;
+    color: #1b5e20;
+}
+
+.gt-bar-green {
+    background-color: #2e7d32;
+}
+
+.gt-bar-emerald {
+    background-color: #388e3c;
+}
+
+.gt-bar-forest {
+    background-color: #1b5e20;
+}

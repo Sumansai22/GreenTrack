@@ -1,0 +1,55 @@
+<template>
+    <div class="slds-grid slds-wrap slds-gutters">
+        <!-- Hotspots Map -->
+        <div class="slds-col slds-size_1-of-1 slds-large-size_7-of-12">
+            <lightning-card title="Waste Hotspots & Illegal Dumping Map" icon-name="standard:location" class="gt-card">
+                <div class="slds-p-around_medium">
+                    <template if:true={hasMapMarkers}>
+                        <lightning-map
+                            map-markers={mapMarkers}
+                            zoom-level="12"
+                            list-view="hidden">
+                        </lightning-map>
+                    </template>
+                    <template if:false={hasMapMarkers}>
+                        <div class="slds-text-align_center slds-p-around_large">
+                            <p class="slds-text-color_weak">No geographic coordinates mapped for active waste locations.</p>
+                        </div>
+                    </template>
+                </div>
+            </lightning-card>
+        </div>
+
+        <!-- Hotspot Matrix Table -->
+        <div class="slds-col slds-size_1-of-1 slds-large-size_5-of-12">
+            <lightning-card title="Risk Assessment Matrix" icon-name="standard:survey" class="gt-card">
+                <div class="slds-p-around_medium">
+                    <template if:true={hasHotspots}>
+                        <div class="slds-scrollable_y" style="max-height: 480px;">
+                            <template for:each={hotspots} for:item="h">
+                                <div key={h.Id} class="slds-box slds-box_x-small slds-m-bottom_small gt-hotspot-item">
+                                    <div class="slds-grid slds-grid_align-spread slds-m-bottom_xx-small">
+                                        <span class="slds-text-heading_small font-bold gt-location-name">{h.Name}</span>
+                                        <span class={h.riskBadgeClass}>{h.Risk_Level__c} Risk</span>
+                                    </div>
+                                    <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_xx-small">
+                                        {h.Address__c} ({h.Area__c})
+                                    </p>
+                                    <div class="slds-grid slds-grid_align-spread slds-text-body_small">
+                                        <span>Category: <strong>{h.Waste_Category__c}</strong></span>
+                                        <span>Active Tickets: <strong class="gt-count">{h.Active_Complaint_Count__c}</strong></span>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <template if:false={hasHotspots}>
+                        <div class="slds-text-align_center slds-p-around_large">
+                            <p class="slds-text-color_weak">No high-risk waste locations identified.</p>
+                        </div>
+                    </template>
+                </div>
+            </lightning-card>
+        </div>
+    </div>
+</template>

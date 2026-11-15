@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Positive_Quantity</fullName>
+    <active>true</active>
+    <description>Ensures the estimated recycling quantity is greater than zero.</description>
+    <errorConditionFormula>!ISBLANK(Estimated_Quantity__c) &amp;&amp; Estimated_Quantity__c &lt;= 0</errorConditionFormula>
+    <errorDisplayField>Estimated_Quantity__c</errorDisplayField>
+    <errorMessage>Estimated recyclable quantity must be greater than zero kg.</errorMessage>
+</ValidationRule>

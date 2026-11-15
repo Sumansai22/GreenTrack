@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Require_Resolution_Notes_On_Close</fullName>
+    <active>true</active>
+    <description>Mandates that resolution notes must be provided when a waste complaint status is set to Resolved.</description>
+    <errorConditionFormula>ISPICKVAL(Status__c, &quot;Resolved&quot;) &amp;&amp; ISBLANK(Resolution_Notes__c)</errorConditionFormula>
+    <errorDisplayField>Resolution_Notes__c</errorDisplayField>
+    <errorMessage>Resolution Notes are required before marking a complaint as Resolved.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,88 @@
+<template>
+    <lightning-card title="Report a Waste Problem" icon-name="standard:case" class="gt-card">
+        <div class="slds-p-around_medium">
+            <template if:true={duplicateWarning}>
+                <div class="slds-notify slds-notify_alert slds-alert_warning slds-m-bottom_medium" role="alert">
+                    <span class="slds-assistive-text">warning</span>
+                    <h2>Potential duplicate complaint detected nearby in {area} for {wasteType}. Existing ticket: {duplicateComplaintName}</h2>
+                </div>
+            </template>
+
+            <lightning-record-edit-form
+                object-api-name="Waste_Complaint__c"
+                onsuccess={handleSuccess}
+                onerror={handleError}
+                onsubmit={handleSubmit}>
+                <lightning-messages></lightning-messages>
+
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <!-- Basic Information -->
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input-field field-name="Complaint_Title__c" required onchange={handleTitleChange}></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input-field field-name="Waste_Type__c" required onchange={handleWasteTypeChange}></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input-field field-name="Severity__c" required></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input-field field-name="Resident_Email__c"></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input-field field-name="Resident_Phone__c"></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input-field field-name="Area__c" required onchange={handleAreaChange}></lightning-input-field>
+                    </div>
+
+                    <!-- Location Details -->
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-3">
+                        <lightning-input-field field-name="Street_Address__c"></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <lightning-input-field field-name="City__c"></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <lightning-input-field field-name="Postal_Code__c"></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <lightning-input-field field-name="Latitude__c" value={latitude}></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <lightning-input-field field-name="Longitude__c" value={longitude}></lightning-input-field>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-1 slds-m-vertical_small">
+                        <lightning-button label="Use My Current GPS Location" icon-name="utility:checkin" onclick={handleGetLocation}></lightning-button>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning-input-field field-name="Description__c"></lightning-input-field>
+                    </div>
+                </div>
+
+                <!-- File Attachment Section -->
+                <template if:true={createdRecordId}>
+                    <div class="slds-m-top_medium slds-box slds-theme_shade">
+                        <p class="slds-text-heading_small slds-m-bottom_small">Upload Supporting Photo Evidence</p>
+                        <lightning-file-upload
+                            label="Attach Photographs"
+                            name="fileUploader"
+                            accept={acceptedFormats}
+                            record-id={createdRecordId}
+                            onuploadfinished={handleUploadFinished}
+                            multiple>
+                        </lightning-file-upload>
+                    </div>
+                </template>
+
+                <div class="slds-m-top_large slds-grid slds-grid_align-end">
+                    <lightning-button variant="neutral" label="Clear Form" onclick={handleReset} class="slds-m-right_small"></lightning-button>
+                    <lightning-button variant="brand" type="submit" label="Submit Complaint" disabled={isSubmitting}></lightning-button>
+                </div>
+            </lightning-record-edit-form>
+        </div>
+    </lightning-card>
+</template>

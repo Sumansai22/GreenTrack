@@ -1,0 +1,121 @@
+<template>
+    <div class="slds-m-bottom_medium">
+        <!-- Top Stats Row -->
+        <div class="slds-grid slds-wrap slds-gutters">
+            <!-- Total Complaints -->
+            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-large-size_1-of-5 slds-m-bottom_small">
+                <div class="gt-kpi-card gt-kpi-blue" onclick={navigateToComplaints}>
+                    <div class="gt-kpi-title">Total Complaints</div>
+                    <div class="gt-kpi-value">{metrics.totalComplaints}</div>
+                    <div class="gt-kpi-sub">All logged reports</div>
+                </div>
+            </div>
+
+            <!-- New Complaints -->
+            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-large-size_1-of-5 slds-m-bottom_small">
+                <div class="gt-kpi-card gt-kpi-amber" onclick={navigateToComplaints}>
+                    <div class="gt-kpi-title">New / Pending</div>
+                    <div class="gt-kpi-value">{metrics.pendingComplaints}</div>
+                    <div class="gt-kpi-sub">Awaiting clearance</div>
+                </div>
+            </div>
+
+            <!-- In Progress -->
+            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-large-size_1-of-5 slds-m-bottom_small">
+                <div class="gt-kpi-card gt-kpi-teal" onclick={navigateToComplaints}>
+                    <div class="gt-kpi-title">In Progress</div>
+                    <div class="gt-kpi-value">{metrics.inProgressComplaints}</div>
+                    <div class="gt-kpi-sub">Field action underway</div>
+                </div>
+            </div>
+
+            <!-- Resolved -->
+            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-large-size_1-of-5 slds-m-bottom_small">
+                <div class="gt-kpi-card gt-kpi-green" onclick={navigateToComplaints}>
+                    <div class="gt-kpi-title">Resolved</div>
+                    <div class="gt-kpi-value">{metrics.resolvedComplaints}</div>
+                    <div class="gt-kpi-sub">{metrics.resolutionRatePercent}% resolution rate</div>
+                </div>
+            </div>
+
+            <!-- Critical -->
+            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-large-size_1-of-5 slds-m-bottom_small">
+                <div class="gt-kpi-card gt-kpi-red" onclick={navigateToComplaints}>
+                    <div class="gt-kpi-title">Critical & Overdue</div>
+                    <div class="gt-kpi-value">{metrics.criticalComplaints} / {metrics.overdueComplaints}</div>
+                    <div class="gt-kpi-sub">Urgent attention needed</div>
+                </div>
+            </div>
+
+            <!-- Recycling Requests -->
+            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-large-size_1-of-5 slds-m-bottom_small">
+                <div class="gt-kpi-card gt-kpi-purple" onclick={navigateToRecycling}>
+                    <div class="gt-kpi-title">Recycling Bookings</div>
+                    <div class="gt-kpi-value">{metrics.recyclingRequests}</div>
+                    <div class="gt-kpi-sub">{metrics.totalRecycledKg} kg collected</div>
+                </div>
+            </div>
+
+            <!-- Active Teams -->
+            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-large-size_1-of-5 slds-m-bottom_small">
+                <div class="gt-kpi-card gt-kpi-forest" onclick={navigateToDispatch}>
+                    <div class="gt-kpi-title">Collection Teams</div>
+                    <div class="gt-kpi-value">{metrics.activeTeams}</div>
+                    <div class="gt-kpi-sub">Active in municipal sectors</div>
+                </div>
+            </div>
+
+            <!-- Avg Resolution Time -->
+            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-large-size_1-of-5 slds-m-bottom_small">
+                <div class="gt-kpi-card gt-kpi-slate" onclick={navigateToAnalytics}>
+                    <div class="gt-kpi-title">Avg. Resolution</div>
+                    <div class="gt-kpi-value">{metrics.avgResolutionHours}h</div>
+                    <div class="gt-kpi-sub">Per completed ticket</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Dispatch & Operational Shortcuts Banner -->
+        <div class="slds-grid slds-wrap slds-gutters slds-m-top_small">
+            <div class="slds-col slds-size_1-of-1 slds-large-size_6-of-12 slds-m-bottom_medium">
+                <lightning-card title="Operational Quick Actions" icon-name="utility:touch_action" class="gt-card">
+                    <div class="slds-p-around_medium">
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-2 slds-m-bottom_small">
+                                <lightning-button variant="neutral" label="Submit Resident Ticket" icon-name="utility:add" onclick={navigateToReport} class="slds-size_1-of-1"></lightning-button>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-m-bottom_small">
+                                <lightning-button variant="neutral" label="Dispatch Teams" icon-name="utility:send" onclick={navigateToDispatch} class="slds-size_1-of-1"></lightning-button>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-button variant="neutral" label="Inspect Hotspots" icon-name="utility:location" onclick={navigateToHotspots} class="slds-size_1-of-1"></lightning-button>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-button variant="neutral" label="View Analytics" icon-name="utility:chart" onclick={navigateToAnalytics} class="slds-size_1-of-1"></lightning-button>
+                            </div>
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+
+            <div class="slds-col slds-size_1-of-1 slds-large-size_6-of-12 slds-m-bottom_medium">
+                <lightning-card title="System Health & SLA Status" icon-name="standard:service_contract" class="gt-card">
+                    <div class="slds-p-around_medium">
+                        <div class="slds-grid slds-grid_align-spread slds-m-bottom_small">
+                            <span>SLA Breach Protection:</span>
+                            <span class="slds-badge slds-theme_success">Active</span>
+                        </div>
+                        <div class="slds-grid slds-grid_align-spread slds-m-bottom_small">
+                            <span>Auto Team Assignment:</span>
+                            <span class="slds-badge slds-theme_success">Automated</span>
+                        </div>
+                        <div class="slds-grid slds-grid_align-spread">
+                            <span>Geospatial Hotspot Tracking:</span>
+                            <span class="slds-badge slds-theme_success">Real-time</span>
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+        </div>
+    </div>
+</template>

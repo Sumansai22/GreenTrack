@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>Recycling_Request__c.Resident_Name__c</field>
+    </columns>
+    <columns>
+        <field>Recycling_Request__c.Waste_Category__c</field>
+    </columns>
+    <columns>
+        <field>Recycling_Request__c.Estimated_Quantity__c</field>
+    </columns>
+    <columns>
+        <field>Recycling_Request__c.Pickup_Date__c</field>
+    </columns>
+    <columns>
+        <field>Recycling_Request__c.Status__c</field>
+    </columns>
+    <description>Overview of community bulk recycling requests and pickup statuses.</description>
+    <format>Tabular</format>
+    <name>Recycling Requests Summary</name>
+    <reportType>CustomEntity$Recycling_Request__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CUST_CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

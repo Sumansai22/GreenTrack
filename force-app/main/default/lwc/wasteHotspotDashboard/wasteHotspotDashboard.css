@@ -1,0 +1,36 @@
+.gt-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.gt-location-name {
+    color: #1b5e20;
+}
+
+.gt-hotspot-item {
+    background-color: #fafbfc;
+    border-left: 4px solid #2e7d32;
+}
+
+.gt-risk-high {
+    background-color: #ffebee;
+    color: #c62828;
+    font-weight: 700;
+}
+
+.gt-risk-medium {
+    background-color: #fff3e0;
+    color: #ef6c00;
+    font-weight: 600;
+}
+
+.gt-risk-low {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    font-weight: 500;
+}
+
+.gt-count {
+    color: #1b5e20;
+}

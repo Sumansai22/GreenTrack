@@ -1,0 +1,39 @@
+.greentrack-container {
+    background-color: #f4f6f9;
+    min-height: 100vh;
+    padding: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #212529;
+}
+
+.gt-header {
+    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(27, 94, 32, 0.15);
+    color: #ffffff;
+}
+
+.gt-brand-icon {
+    font-size: 2.2rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.4rem 0.6rem;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.gt-app-title {
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.gt-app-subtitle {
+    color: #c8e6c9;
+    font-size: 0.85rem;
+}
+
+.gt-status-badge {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+    font-weight: 600;
+}

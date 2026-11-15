@@ -1,0 +1,71 @@
+<template>
+    <lightning-card title="Waste Complaints Directory" icon-name="standard:case_wrap" class="gt-card">
+        <div class="slds-p-around_medium">
+            <!-- Filter Bar -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium slds-grid_vertical-align-end">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                    <lightning-input type="search" label="Search Complaints" placeholder="Search by ID, title, or area..." value={searchKey} onchange={handleSearchChange}></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-combobox label="Status Filter" value={statusFilter} options={statusOptions} onchange={handleStatusFilterChange}></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-combobox label="Severity Filter" value={severityFilter} options={severityOptions} onchange={handleSeverityFilterChange}></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-6 slds-text-align_right">
+                    <lightning-button-icon icon-name="utility:refresh" alternative-text="Refresh" onclick={refreshData} class="slds-m-top_medium"></lightning-button-icon>
+                </div>
+            </div>
+
+            <!-- Complaints Table -->
+            <template if:true={hasComplaints}>
+                <div class="slds-scrollable_x">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th scope="col"><div class="slds-truncate" title="Ticket #">Ticket #</div></th>
+                                <th scope="col"><div class="slds-truncate" title="Title">Title</div></th>
+                                <th scope="col"><div class="slds-truncate" title="Waste Type">Waste Type</div></th>
+                                <th scope="col"><div class="slds-truncate" title="Severity">Severity</div></th>
+                                <th scope="col"><div class="slds-truncate" title="Status">Status</div></th>
+                                <th scope="col"><div class="slds-truncate" title="Area">Area</div></th>
+                                <th scope="col"><div class="slds-truncate" title="Assigned Team">Assigned Team</div></th>
+                                <th scope="col"><div class="slds-truncate" title="Action">Action</div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={complaints} for:item="c">
+                                <tr key={c.Id} class="slds-hint-parent gt-table-row" onclick={handleRowClick} data-id={c.Id}>
+                                    <td><div class="slds-truncate font-bold gt-ticket-id">{c.Name}</div></td>
+                                    <td><div class="slds-truncate gt-ticket-title" title={c.Complaint_Title__c}>{c.Complaint_Title__c}</div></td>
+                                    <td><div class="slds-truncate">{c.Waste_Type__c}</div></td>
+                                    <td>
+                                        <span class={c.severityBadgeClass}>{c.Severity__c}</span>
+                                    </td>
+                                    <td>
+                                        <lightning-badge label={c.Status__c}></lightning-badge>
+                                    </td>
+                                    <td><div class="slds-truncate">{c.Area__c}</div></td>
+                                    <td><div class="slds-truncate">{c.teamName}</div></td>
+                                    <td>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="View Details" data-id={c.Id} onclick={handleViewClick}></lightning-button-icon>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+
+            <!-- Empty State -->
+            <template if:false={hasComplaints}>
+                <div class="slds-illustration slds-illustration_small slds-p-around_large slds-text-align_center">
+                    <div class="slds-text-heading_medium slds-m-top_small">No Complaints Found</div>
+                    <div class="slds-text-body_regular slds-text-color_weak slds-m-top_xx-small">
+                        No records match your search criteria. Try clearing the filter or search keyword.
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

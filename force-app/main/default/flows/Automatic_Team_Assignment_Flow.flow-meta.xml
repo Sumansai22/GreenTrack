@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <description>Evaluates complaint location and severity, matches with active collection teams, and routes assignment.</description>
+    <label>Automatic Team Assignment Flow</label>
+    <processType>AutoLaunchedFlow</processType>
+    <status>Active</status>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Find_Active_Team</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Assigned_Team__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Waste_Complaint__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <recordLookups>
+        <name>Find_Active_Team</name>
+        <label>Find Active Collection Team</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Team_Found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Active_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Availability_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Available</stringValue>
+            </value>
+        </filters>
+        <object>Collection_Team__c</object>
+        <outputAssignments>
+            <assignToReference>VarTeamId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <sortField>Total_Assigned_Complaints__c</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <decisions>
+        <name>Check_Team_Found</name>
+        <label>Check Team Found</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>No Team Available</defaultConnectorLabel>
+        <rules>
+            <name>Team_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VarTeamId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Team_To_Complaint</targetReference>
+            </connector>
+            <label>Team Found</label>
+        </rules>
+    </decisions>
+    <recordUpdates>
+        <name>Assign_Team_To_Complaint</name>
+        <label>Assign Team To Complaint</label>
+        <locationX>100</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Assigned_Team__c</field>
+            <value>
+                <elementReference>VarTeamId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Assigned</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <variables>
+        <name>VarTeamId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

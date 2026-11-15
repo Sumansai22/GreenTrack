@@ -1,0 +1,96 @@
+<template>
+    <div class="slds-grid slds-wrap slds-gutters">
+        <!-- Teams Workload Overview -->
+        <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+            <lightning-card title="Collection Teams & Field Workloads" icon-name="standard:team_member" class="gt-card">
+                <div class="slds-p-around_medium">
+                    <template if:true={hasTeams}>
+                        <div class="slds-scrollable_x">
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th scope="col"><div class="slds-truncate" title="Team Name">Team Name</div></th>
+                                        <th scope="col"><div class="slds-truncate" title="Code">Code</div></th>
+                                        <th scope="col"><div class="slds-truncate" title="Team Leader">Leader</div></th>
+                                        <th scope="col"><div class="slds-truncate" title="Assigned Area">Assigned Area</div></th>
+                                        <th scope="col"><div class="slds-truncate" title="Status">Status</div></th>
+                                        <th scope="col"><div class="slds-truncate" title="Workload">Active Tickets</div></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={teams} for:item="t">
+                                        <tr key={t.Id}>
+                                            <td><div class="slds-truncate font-bold gt-team-name">{t.Name}</div></td>
+                                            <td><div class="slds-truncate">{t.Team_Code__c}</div></td>
+                                            <td><div class="slds-truncate">{t.Team_Leader__c}</div></td>
+                                            <td><div class="slds-truncate">{t.Assigned_Area__c}</div></td>
+                                            <td>
+                                                <lightning-badge label={t.Availability_Status__c}></lightning-badge>
+                                            </td>
+                                            <td>
+                                                <span class="gt-workload-badge">{t.Total_Assigned_Complaints__c}</span>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+                    <template if:false={hasTeams}>
+                        <div class="slds-text-align_center slds-p-around_medium">
+                            <p class="slds-text-color_weak">No collection teams configured yet.</p>
+                        </div>
+                    </template>
+                </div>
+            </lightning-card>
+        </div>
+
+        <!-- Manual Dispatch Action Card -->
+        <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12">
+            <lightning-card title="Manual Team Dispatch" icon-name="utility:send" class="gt-card">
+                <div class="slds-p-around_medium">
+                    <p class="slds-text-body_small slds-m-bottom_medium slds-text-color_weak">
+                        Route unassigned or high-priority complaints to a specific collection team and cleaning worker.
+                    </p>
+
+                    <lightning-combobox
+                        label="Select Open Complaint"
+                        placeholder="Choose complaint ticket"
+                        value={selectedComplaintId}
+                        options={complaintOptions}
+                        onchange={handleComplaintChange}
+                        class="slds-m-bottom_small">
+                    </lightning-combobox>
+
+                    <lightning-combobox
+                        label="Select Collection Team"
+                        placeholder="Choose active team"
+                        value={selectedTeamId}
+                        options={teamOptions}
+                        onchange={handleTeamChange}
+                        class="slds-m-bottom_small">
+                    </lightning-combobox>
+
+                    <lightning-combobox
+                        label="Select Cleaning Worker (Optional)"
+                        placeholder="Choose worker"
+                        value={selectedWorkerId}
+                        options={workerOptions}
+                        onchange={handleWorkerChange}
+                        disabled={isWorkerDisabled}
+                        class="slds-m-bottom_medium">
+                    </lightning-combobox>
+
+                    <lightning-button
+                        variant="brand"
+                        label="Confirm Dispatch Assignment"
+                        icon-name="utility:check"
+                        onclick={handleDispatch}
+                        disabled={isDispatchDisabled}
+                        class="slds-size_1-of-1">
+                    </lightning-button>
+                </div>
+            </lightning-card>
+        </div>
+    </div>
+</template>

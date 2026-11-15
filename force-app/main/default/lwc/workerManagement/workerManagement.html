@@ -1,0 +1,69 @@
+<template>
+    <lightning-card title="Cleaning Workers Directory & Status" icon-name="standard:contact" class="gt-card">
+        <div slot="actions">
+            <lightning-button variant="brand" label="New Cleaning Worker" icon-name="utility:add" onclick={handleNewWorker}></lightning-button>
+        </div>
+
+        <div class="slds-p-around_medium">
+            <template if:true={hasWorkers}>
+                <div class="slds-scrollable_x">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th scope="col"><div class="slds-truncate" title="Worker Name">Worker Name</div></th>
+                                <th scope="col"><div class="slds-truncate" title="Employee ID">Employee ID</div></th>
+                                <th scope="col"><div class="slds-truncate" title="Contact Number">Contact</div></th>
+                                <th scope="col"><div class="slds-truncate" title="Assigned Team">Assigned Team</div></th>
+                                <th scope="col"><div class="slds-truncate" title="Assigned Area">Assigned Area</div></th>
+                                <th scope="col"><div class="slds-truncate" title="Availability">Availability</div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={workers} for:item="w">
+                                <tr key={w.Id}>
+                                    <td><div class="slds-truncate font-bold gt-worker-name">{w.Name}</div></td>
+                                    <td><div class="slds-truncate">{w.Employee_ID__c}</div></td>
+                                    <td><div class="slds-truncate">{w.Contact_Number__c}</div></td>
+                                    <td><div class="slds-truncate">{w.teamName}</div></td>
+                                    <td><div class="slds-truncate">{w.Assigned_Area__c}</div></td>
+                                    <td>
+                                        <lightning-badge label={w.Availability_Status__c}></lightning-badge>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+
+            <template if:false={hasWorkers}>
+                <div class="slds-text-align_center slds-p-around_large">
+                    <p class="slds-text-heading_small slds-text-color_weak">No cleaning workers registered in the system.</p>
+                </div>
+            </template>
+        </div>
+
+        <!-- New Worker Modal -->
+        <template if:true={isModalOpen}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCloseModal}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                        </button>
+                        <h2 class="slds-text-heading_medium">Register New Cleaning Worker</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning-record-form
+                            object-api-name="Cleaning_Worker__c"
+                            fields={workerFields}
+                            onsuccess={handleWorkerCreated}
+                            oncancel={handleCloseModal}>
+                        </lightning-record-form>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </lightning-card>
+</template>

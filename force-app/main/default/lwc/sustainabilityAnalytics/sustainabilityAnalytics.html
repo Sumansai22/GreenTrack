@@ -1,0 +1,119 @@
+<template>
+    <div class="slds-grid slds-wrap slds-gutters">
+        <!-- SLA Compliance Metric Card -->
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_medium">
+            <lightning-card title="SLA Compliance Rate" icon-name="standard:flow" class="gt-card">
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <div class="gt-metric-large font-bold">{slaComplianceRate}%</div>
+                    <p class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small">
+                        {compliantComplaints} Compliant / {breachedComplaints} Breached
+                    </p>
+                    <div class="slds-progress-bar slds-progress-bar_large slds-m-top_medium" aria-valuemin="0" aria-valuemax="100" aria-valuenow={slaComplianceRate} role="progressbar">
+                        <span class="slds-progress-bar__value gt-bar-green" style={slaProgressStyle}></span>
+                    </div>
+                </div>
+            </lightning-card>
+        </div>
+
+        <!-- Waste Category Breakdown -->
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-3 slds-m-bottom_medium">
+            <lightning-card title="Complaints by Waste Category" icon-name="standard:chart" class="gt-card">
+                <div class="slds-p-around_medium">
+                    <template if:true={hasWasteTypes}>
+                        <template for:each={wasteTypes} for:item="wt">
+                            <div key={wt.label} class="slds-m-bottom_small">
+                                <div class="slds-grid slds-grid_align-spread slds-text-body_small">
+                                    <span><strong>{wt.label}</strong></span>
+                                    <span>{wt.value} cases ({wt.percentage}%)</span>
+                                </div>
+                                <div class="slds-progress-bar slds-progress-bar_medium slds-m-top_xx-small" aria-valuemin="0" aria-valuemax="100" aria-valuenow={wt.percentage} role="progressbar">
+                                    <span class="slds-progress-bar__value gt-bar-emerald" style={wt.barStyle}></span>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+                    <template if:false={hasWasteTypes}>
+                        <p class="slds-text-color_weak slds-text-align_center">No category data recorded.</p>
+                    </template>
+                </div>
+            </lightning-card>
+        </div>
+
+        <!-- Complaints by Severity -->
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-m-bottom_medium">
+            <lightning-card title="Severity Distribution" icon-name="standard:metrics" class="gt-card">
+                <div class="slds-p-around_medium">
+                    <template if:true={hasSeverities}>
+                        <template for:each={severities} for:item="s">
+                            <div key={s.label} class="slds-m-bottom_small">
+                                <div class="slds-grid slds-grid_align-spread slds-text-body_small">
+                                    <span><strong>{s.label}</strong></span>
+                                    <span>{s.value} tickets</span>
+                                </div>
+                                <div class="slds-progress-bar slds-progress-bar_medium slds-m-top_xx-small" aria-valuemin="0" aria-valuemax="100" aria-valuenow={s.percentage} role="progressbar">
+                                    <span class="slds-progress-bar__value" style={s.barStyle}></span>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+                    <template if:false={hasSeverities}>
+                        <p class="slds-text-color_weak slds-text-align_center">No severity data available.</p>
+                    </template>
+                </div>
+            </lightning-card>
+        </div>
+
+        <!-- Complaints by Area -->
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-m-bottom_medium">
+            <lightning-card title="Top Municipal Areas" icon-name="standard:address" class="gt-card">
+                <div class="slds-p-around_medium">
+                    <template if:true={hasAreas}>
+                        <template for:each={areas} for:item="a">
+                            <div key={a.label} class="slds-m-bottom_small">
+                                <div class="slds-grid slds-grid_align-spread slds-text-body_small">
+                                    <span><strong>{a.label}</strong></span>
+                                    <span>{a.value} complaints</span>
+                                </div>
+                                <div class="slds-progress-bar slds-progress-bar_medium slds-m-top_xx-small" aria-valuemin="0" aria-valuemax="100" aria-valuenow={a.percentage} role="progressbar">
+                                    <span class="slds-progress-bar__value gt-bar-forest" style={a.barStyle}></span>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+                    <template if:false={hasAreas}>
+                        <p class="slds-text-color_weak slds-text-align_center">No area data available.</p>
+                    </template>
+                </div>
+            </lightning-card>
+        </div>
+
+        <!-- Monthly Trends -->
+        <div class="slds-col slds-size_1-of-1">
+            <lightning-card title="Annual Resolution Trends by Month" icon-name="standard:report" class="gt-card">
+                <div class="slds-p-around_medium">
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <template for:each={monthlyTrends} for:item="m">
+                                        <th key={m.monthName} scope="col"><div class="slds-truncate slds-text-align_center">{m.monthName}</div></th>
+                                    </template>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <template for:each={monthlyTrends} for:item="m">
+                                        <td key={m.monthName} class="slds-text-align_center">
+                                            <div class="slds-text-body_small">Reported: <strong>{m.reportedCount}</strong></div>
+                                            <div class="slds-text-body_small slds-text-color_success">Resolved: <strong>{m.resolvedCount}</strong></div>
+                                        </td>
+                                    </template>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </lightning-card>
+        </div>
+    </div>
+</template>

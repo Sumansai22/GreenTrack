@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valid_Status_Transition</fullName>
+    <active>true</active>
+    <description>Ensures newly created complaints start in New, Submitted, or Assigned status.</description>
+    <errorConditionFormula>ISNEW() &amp;&amp; !ISPICKVAL(Status__c, &quot;New&quot;) &amp;&amp; !ISPICKVAL(Status__c, &quot;Submitted&quot;) &amp;&amp; !ISPICKVAL(Status__c, &quot;Assigned&quot;)</errorConditionFormula>
+    <errorDisplayField>Status__c</errorDisplayField>
+    <errorMessage>A newly created complaint must start with Status set to 'New', 'Submitted', or 'Assigned'.</errorMessage>
+</ValidationRule>

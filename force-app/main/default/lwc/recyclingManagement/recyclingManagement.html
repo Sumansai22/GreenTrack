@@ -1,0 +1,90 @@
+<template>
+    <div class="slds-grid slds-wrap slds-gutters">
+        <!-- Booking Form -->
+        <div class="slds-col slds-size_1-of-1 slds-large-size_5-of-12">
+            <lightning-card title="Schedule Doorstep Recycling" icon-name="standard:channel_program_levels" class="gt-card">
+                <div class="slds-p-around_medium">
+                    <lightning-input label="Resident Name" value={residentName} onchange={handleNameChange} required class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input type="email" label="Resident Email" value={residentEmail} onchange={handleEmailChange} class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input type="tel" label="Resident Phone" value={residentPhone} onchange={handlePhoneChange} class="slds-m-bottom_small"></lightning-input>
+                    
+                    <lightning-combobox
+                        label="Recycling Category"
+                        value={wasteCategory}
+                        options={categoryOptions}
+                        onchange={handleCategoryChange}
+                        required
+                        class="slds-m-bottom_small">
+                    </lightning-combobox>
+
+                    <lightning-input type="number" label="Estimated Quantity (kg)" value={estimatedQty} onchange={handleQtyChange} step="0.5" min="1" required class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input type="date" label="Preferred Pickup Date" value={pickupDate} onchange={handleDateChange} required min={minDate} class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input label="Pickup Address" value={pickupAddress} onchange={handleAddressChange} required class="slds-m-bottom_medium"></lightning-input>
+
+                    <lightning-button
+                        variant="brand"
+                        label="Book Recycling Pickup"
+                        icon-name="utility:event"
+                        onclick={handleBookPickup}
+                        class="slds-size_1-of-1">
+                    </lightning-button>
+                </div>
+            </lightning-card>
+        </div>
+
+        <!-- Requests List -->
+        <div class="slds-col slds-size_1-of-1 slds-large-size_7-of-12">
+            <lightning-card title="Recycling Pickups & Status" icon-name="standard:orders" class="gt-card">
+                <div slot="actions">
+                    <lightning-button-icon icon-name="utility:refresh" alternative-text="Refresh" onclick={refreshList}></lightning-button-icon>
+                </div>
+                <div class="slds-p-around_medium">
+                    <template if:true={hasRequests}>
+                        <div class="slds-scrollable_x">
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th scope="col"><div class="slds-truncate" title="Request #">Request #</div></th>
+                                        <th scope="col"><div class="slds-truncate" title="Resident">Resident</div></th>
+                                        <th scope="col"><div class="slds-truncate" title="Category">Category</div></th>
+                                        <th scope="col"><div class="slds-truncate" title="Quantity">Est. (kg)</div></th>
+                                        <th scope="col"><div class="slds-truncate" title="Date">Pickup Date</div></th>
+                                        <th scope="col"><div class="slds-truncate" title="Status">Status</div></th>
+                                        <th scope="col"><div class="slds-truncate" title="Action">Action</div></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={requests} for:item="r">
+                                        <tr key={r.Id}>
+                                            <td><div class="slds-truncate font-bold gt-req-id">{r.Name}</div></td>
+                                            <td><div class="slds-truncate">{r.Resident_Name__c}</div></td>
+                                            <td><div class="slds-truncate">{r.Waste_Category__c}</div></td>
+                                            <td><div class="slds-truncate">{r.Estimated_Quantity__c}</div></td>
+                                            <td><div class="slds-truncate">{r.Pickup_Date__c}</div></td>
+                                            <td>
+                                                <lightning-badge label={r.Status__c}></lightning-badge>
+                                            </td>
+                                            <td>
+                                                <template if:false={r.isCompleted}>
+                                                    <lightning-button-icon icon-name="utility:check" alternative-text="Mark Completed" data-id={r.Id} onclick={handleCompletePickup}></lightning-button-icon>
+                                                </template>
+                                                <template if:true={r.isCompleted}>
+                                                    <lightning-icon icon-name="utility:success" size="x-small" variant="success"></lightning-icon>
+                                                </template>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+                    <template if:false={hasRequests}>
+                        <div class="slds-text-align_center slds-p-around_large">
+                            <p class="slds-text-color_weak">No bulk recycling requests registered.</p>
+                        </div>
+                    </template>
+                </div>
+            </lightning-card>
+        </div>
+    </div>
+</template>

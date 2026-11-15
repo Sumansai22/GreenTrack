@@ -1,0 +1,98 @@
+<template>
+    <lightning-card title="Complaint Details & Resolution" icon-name="standard:record" class="gt-card">
+        <template if:true={complaintId}>
+            <div class="slds-p-around_medium">
+                <lightning-record-edit-form
+                    record-id={complaintId}
+                    object-api-name="Waste_Complaint__c"
+                    onsuccess={handleSuccess}
+                    onerror={handleError}>
+                    <lightning-messages></lightning-messages>
+
+                    <!-- Header status summary -->
+                    <div class="slds-box slds-theme_shade slds-m-bottom_medium">
+                        <div class="slds-grid slds-wrap slds-grid_align-spread slds-grid_vertical-align-center">
+                            <div>
+                                <span class="slds-text-title_bold slds-m-right_x-small">Ticket:</span>
+                                <lightning-output-field field-name="Name" variant="label-hidden"></lightning-output-field>
+                            </div>
+                            <div class="slds-grid slds-grid_vertical-align-center">
+                                <lightning-output-field field-name="Severity__c" variant="label-hidden" class="slds-m-right_small"></lightning-output-field>
+                                <lightning-output-field field-name="Status__c" variant="label-hidden"></lightning-output-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Readonly / Key Fields -->
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <lightning-output-field field-name="Complaint_Title__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <lightning-output-field field-name="Waste_Type__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <lightning-output-field field-name="Area__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <lightning-output-field field-name="Street_Address__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <lightning-output-field field-name="Reported_Date__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <lightning-output-field field-name="SLA_Deadline__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <lightning-output-field field-name="Assigned_Team__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <lightning-output-field field-name="Assigned_Worker__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1">
+                            <lightning-output-field field-name="Description__c"></lightning-output-field>
+                        </div>
+                    </div>
+
+                    <!-- Update / Resolution Section -->
+                    <div class="slds-section slds-is-open slds-m-top_medium">
+                        <h3 class="slds-section__title slds-theme_shade">
+                            <span class="slds-truncate slds-p-horizontal_small" title="Field Operations & Resolution">Field Operations & Resolution</span>
+                        </h3>
+                        <div class="slds-section__content slds-p-around_small">
+                            <lightning-input-field field-name="Status__c"></lightning-input-field>
+                            <lightning-input-field field-name="Resolution_Notes__c"></lightning-input-field>
+                            <lightning-input-field field-name="Is_Escalated__c"></lightning-input-field>
+
+                            <div class="slds-m-top_medium slds-text-align_right">
+                                <lightning-button variant="brand" type="submit" label="Save Changes" icon-name="utility:save"></lightning-button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Photo Evidence -->
+                    <div class="slds-m-top_medium slds-box slds-theme_shade">
+                        <p class="slds-text-heading_small slds-m-bottom_small">Attach Additional Evidence</p>
+                        <lightning-file-upload
+                            label="Upload Photos"
+                            name="fileUploader"
+                            accept={acceptedFormats}
+                            record-id={complaintId}
+                            onuploadfinished={handleUploadFinished}
+                            multiple>
+                        </lightning-file-upload>
+                    </div>
+                </lightning-record-edit-form>
+            </div>
+        </template>
+
+        <template if:false={complaintId}>
+            <div class="slds-illustration slds-illustration_small slds-p-around_large slds-text-align_center">
+                <div class="slds-text-heading_medium slds-m-top_small">No Complaint Selected</div>
+                <div class="slds-text-body_regular slds-text-color_weak slds-m-top_xx-small">
+                    Select a waste complaint from the directory table to inspect details, assign personnel, and log resolution.
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
