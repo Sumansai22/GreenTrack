@@ -3,10 +3,12 @@
     <apiVersion>60.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>GreenTrack Dashboard</masterLabel>
-    <description>Central GreenTrack management platform and operational dashboard.</description>
+    <description>Central GreenTrack management platform, resident portal, and operational dashboard.</description>
     <targets>
         <target>lightning__AppPage</target>
         <target>lightning__HomePage</target>
         <target>lightning__Tab</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
     </targets>
 </LightningComponentBundle>

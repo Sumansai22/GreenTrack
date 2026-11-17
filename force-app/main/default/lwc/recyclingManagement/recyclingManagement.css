@@ -1,9 +1,28 @@
+/* ========================================================
+   RECYCLING MANAGEMENT STYLES
+   GreenTrack Brand Palette (#123D2B, #168653, #65B985)
+======================================================== */
+
 .gt-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: #ffffff;
+    border: 1px solid #E2ECE5;
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 18px rgba(18, 61, 43, 0.05);
 }
 
 .gt-req-id {
-    color: #1b5e20;
+    color: #123D2B;
+    font-weight: 700;
+}
+
+.gt-impact-tag {
+    background-color: #EAF5ED;
+    color: #123D2B;
+    border: 1px solid #C0DFC9;
+    border-radius: 6px;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 0.8rem;
 }

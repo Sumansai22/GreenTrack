@@ -1,9 +1,16 @@
+/* ========================================================
+   CLEANING WORKER MANAGEMENT STYLES
+   GreenTrack Brand Palette (#123D2B, #168653)
+======================================================== */
+
 .gt-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: #ffffff;
+    border: 1px solid #E2ECE5;
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 18px rgba(18, 61, 43, 0.05);
 }
 
 .gt-worker-name {
-    color: #1b5e20;
+    color: #123D2B;
+    font-weight: 700;
 }

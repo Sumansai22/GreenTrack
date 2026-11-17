@@ -1,5 +1,25 @@
+/* ========================================================
+   COMPLAINT DETAILS STYLES
+   GreenTrack Brand Palette (#123D2B, #168653, #EAF5ED)
+======================================================== */
+
 .gt-card {
-    border: 1px solid #e0e0e0;
+    border: 1px solid #E2ECE5;
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 18px rgba(18, 61, 43, 0.05);
+}
+
+.gt-header-box {
+    background-color: #EAF5ED;
+    border: 1px solid #C0DFC9;
     border-radius: 8px;
-    background-color: #ffffff;
+    padding: 0.85rem 1rem;
+}
+
+.gt-evidence-box {
+    background-color: #F7FAF8;
+    border: 1px dashed #65B985;
+    border-radius: 8px;
+    padding: 1rem;
 }

@@ -1,39 +1,547 @@
-.greentrack-container {
-    background-color: #f4f6f9;
+/* ========================================================
+   GREENTRACK MASTER APPLICATION STYLES (SaaS & LWR READY)
+   Brand Palette:
+   - Primary Forest Green: #123D2B
+   - Secondary Green:      #168653
+   - Accent Mint:          #65B985
+   - Light Green Surface:  #EAF5ED
+   - Canvas Background:    #F7FAF8
+   - Typography Primary:   #17251D
+   - Typography Secondary: #68766D
+======================================================== */
+
+.greentrack-app-wrapper {
+    background-color: #F7FAF8;
     min-height: 100vh;
-    padding: 1rem;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    color: #212529;
+    color: #17251D;
 }
 
-.gt-header {
-    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(27, 94, 32, 0.15);
-    color: #ffffff;
+/* 1. Global Navigation Bar */
+.gt-main-navbar {
+    background-color: #123D2B;
+    border-bottom: 2px solid #168653;
+    box-shadow: 0 4px 16px rgba(18, 61, 43, 0.15);
+    padding: 0.75rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.gt-brand-icon {
-    font-size: 2.2rem;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0.4rem 0.6rem;
-    border-radius: 8px;
-    display: inline-block;
+.gt-brand-group {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
 }
 
-.gt-app-title {
-    color: #ffffff;
+.gt-brand-group:hover {
+    opacity: 0.95;
+}
+
+.gt-logo-circle {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(101, 185, 133, 0.4);
+    border-radius: 12px;
+    padding: 0.35rem 0.55rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gt-logo-icon {
+    font-size: 1.6rem;
+}
+
+.gt-brand-title {
+    color: #FFFFFF;
+    font-size: 1.35rem;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
 }
 
-.gt-app-subtitle {
-    color: #c8e6c9;
-    font-size: 0.85rem;
+.gt-brand-tagline {
+    color: #65B985;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2px;
 }
 
-.gt-status-badge {
-    background-color: #e8f5e9;
-    color: #1b5e20;
+/* Nav Pills & Role Switcher */
+.gt-role-switcher {
+    gap: 0.4rem;
+}
+
+.gt-nav-pill {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #CDE2D4;
+    padding: 0.4rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
     font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.gt-nav-pill:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF;
+}
+
+.gt-nav-pill[data-active="true"] {
+    background: #168653;
+    color: #FFFFFF;
+    border-color: #65B985;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.gt-cta-button {
+    background: #65B985;
+    color: #123D2B;
+    border: none;
+    padding: 0.45rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(101, 185, 133, 0.35);
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.gt-cta-button:hover {
+    background: #75c995;
+    transform: translateY(-1px);
+}
+
+.gt-user-pill {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(101, 185, 133, 0.35);
+    border-radius: 8px;
+    padding: 0.35rem 0.65rem;
+    color: #FFFFFF;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.gt-user-name {
+    color: #EAF5ED;
+}
+
+.gt-logout-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.2rem;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.2s ease;
+}
+
+.gt-logout-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* 2. Hero Section */
+.gt-hero-section {
+    background: linear-gradient(180deg, #123D2B 0%, #168653 100%);
+    color: #FFFFFF;
+    padding: 4.5rem 2rem 3.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.gt-hero-container {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.gt-hero-badge {
+    display: inline-block;
+    background: rgba(101, 185, 133, 0.2);
+    color: #C3EED3;
+    border: 1px solid rgba(101, 185, 133, 0.4);
+    padding: 0.3rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 1rem;
+}
+
+.gt-hero-headline {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.18;
+    max-width: 820px;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.5px;
+}
+
+.gt-hero-subtext {
+    font-size: 1.15rem;
+    color: #E2ECE5;
+    max-width: 720px;
+    line-height: 1.55;
+    margin-bottom: 2rem;
+}
+
+.gt-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.gt-btn-primary {
+    background-color: #123D2B;
+    color: #FFFFFF;
+    border: 1px solid #168653;
+    padding: 0.65rem 1.35rem;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(18, 61, 43, 0.25);
+    transition: all 0.2s ease;
+}
+
+.gt-btn-primary:hover {
+    background-color: #168653;
+}
+
+.gt-hero-actions .gt-btn-primary {
+    background-color: #65B985;
+    color: #123D2B;
+    border-color: #65B985;
+}
+
+.gt-hero-actions .gt-btn-primary:hover {
+    background-color: #79cca0;
+}
+
+.gt-btn-secondary {
+    background-color: #EAF5ED;
+    color: #123D2B;
+    border: 1px solid #c0dfc9;
+    padding: 0.65rem 1.35rem;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gt-btn-secondary:hover {
+    background-color: #d6ecdc;
+}
+
+.gt-btn-outline {
+    background-color: transparent;
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 0.65rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gt-btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #FFFFFF;
+}
+
+/* Live Stats Strip */
+.gt-stats-strip {
+    margin-top: 2.5rem;
+}
+
+.gt-stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+}
+
+.gt-stat-number {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: #FFFFFF;
+}
+
+.gt-color-emerald { color: #8BE7B5 !important; }
+.gt-color-mint { color: #65B985 !important; }
+.gt-color-amber { color: #E6A23C !important; }
+
+.gt-stat-label {
+    font-size: 0.8rem;
+    color: #D3E7DC;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-top: 0.3rem;
+}
+
+/* 3. Services Section */
+.gt-section-services {
+    max-width: 1140px;
+    margin: 4rem auto;
+    padding: 0 1.5rem;
+}
+
+.gt-section-header {
+    margin-bottom: 2.5rem;
+}
+
+.gt-section-pretitle {
+    color: #168653;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 0.4rem;
+}
+
+.gt-section-title {
+    color: #123D2B;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    margin-bottom: 0.6rem;
+}
+
+.gt-section-subtitle {
+    color: #68766D;
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.gt-service-card {
+    background: #FFFFFF;
+    border: 1px solid #E2ECE5;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 18px rgba(18, 61, 43, 0.05);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.gt-service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(18, 61, 43, 0.1);
+    border-color: #65B985;
+}
+
+.gt-service-icon-box {
+    font-size: 2.4rem;
+    margin-bottom: 1.2rem;
+}
+
+.gt-service-name {
+    color: #123D2B;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+}
+
+.gt-service-desc {
+    color: #68766D;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    flex-grow: 1;
+    margin-bottom: 1.2rem;
+}
+
+.gt-service-link {
+    color: #168653;
+    font-weight: 700;
+    font-size: 0.88rem;
+}
+
+/* 4. Workflow Section */
+.gt-section-workflow {
+    background: #EAF5ED;
+    padding: 4rem 1.5rem;
+    margin-bottom: 3.5rem;
+}
+
+.gt-workflow-steps {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.gt-step-card {
+    background: #FFFFFF;
+    border: 1px solid #D5E7DB;
+    border-radius: 12px;
+    padding: 1.6rem;
+    height: 100%;
+}
+
+.gt-step-num {
+    color: #65B985;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.gt-step-title {
+    color: #123D2B;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.gt-step-text {
+    color: #68766D;
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+/* 5. Impact Banner */
+.gt-section-impact {
+    max-width: 1140px;
+    margin: 0 auto 4rem auto;
+    padding: 0 1.5rem;
+}
+
+.gt-impact-box {
+    background: linear-gradient(135deg, #123D2B, #168653);
+    color: #FFFFFF;
+    border-radius: 16px;
+    padding: 2.5rem 3rem;
+    box-shadow: 0 6px 20px rgba(18, 61, 43, 0.15);
+}
+
+.gt-impact-title {
+    font-size: 1.7rem;
+    font-weight: 800;
+    margin-bottom: 0.6rem;
+}
+
+.gt-impact-text {
+    font-size: 1rem;
+    color: #E2ECE5;
+    line-height: 1.55;
+}
+
+.gt-btn-primary-invert {
+    background: #FFFFFF;
+    color: #123D2B;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.15s ease;
+}
+
+.gt-btn-primary-invert:hover {
+    transform: translateY(-2px);
+}
+
+/* 6. Footer */
+.gt-landing-footer {
+    background: #123D2B;
+    color: #FFFFFF;
+    padding: 3rem 2rem 2rem 2rem;
+    border-top: 1px solid #168653;
+}
+
+.gt-footer-logo {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #65B985;
+    margin-bottom: 0.4rem;
+}
+
+.gt-footer-sub {
+    font-size: 0.82rem;
+    color: #9ECAB0;
+    margin: 0.15rem 0;
+}
+
+.gt-footer-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.gt-footer-item {
+    font-size: 0.85rem;
+    color: #D3E7DC;
+    cursor: pointer;
+}
+
+.gt-footer-item:hover {
+    color: #FFFFFF;
+}
+
+.gt-footer-copyright {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    font-size: 0.78rem;
+    color: #8EBCA1;
+}
+
+/* 7. Resident / Role Specific Containers */
+.gt-welcome-banner,
+.gt-role-header {
+    background: #FFFFFF;
+    border: 1px solid #E2ECE5;
+    border-left: 5px solid #168653;
+    border-radius: 10px;
+    padding: 1.5rem 1.8rem;
+    box-shadow: 0 2px 10px rgba(18, 61, 43, 0.04);
+}
+
+.gt-welcome-title,
+.gt-role-title {
+    color: #123D2B;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+}
+
+.gt-welcome-sub,
+.gt-role-sub {
+    color: #68766D;
+    font-size: 0.9rem;
+    margin-top: 0.2rem;
+}
+
+.gt-mini-metric {
+    background: #F7FAF8;
+    border: 1px solid #E2ECE5;
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    text-align: center;
+}
+
+.gt-mini-val {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #123D2B;
+}
+
+.gt-mini-lbl {
+    font-size: 0.75rem;
+    color: #68766D;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 0.2rem;
 }

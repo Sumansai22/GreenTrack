@@ -1,36 +1,56 @@
+/* ========================================================
+   WASTE HOTSPOT DASHBOARD STYLES
+   GreenTrack Brand Palette & Risk Indicators
+======================================================== */
+
 .gt-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: #ffffff;
+    border: 1px solid #E2ECE5;
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 18px rgba(18, 61, 43, 0.05);
 }
 
 .gt-location-name {
-    color: #1b5e20;
-}
-
-.gt-hotspot-item {
-    background-color: #fafbfc;
-    border-left: 4px solid #2e7d32;
-}
-
-.gt-risk-high {
-    background-color: #ffebee;
-    color: #c62828;
+    color: #123D2B;
     font-weight: 700;
 }
 
+.gt-hotspot-item {
+    background-color: #F7FAF8;
+    border: 1px solid #E2ECE5;
+    border-left: 5px solid #168653;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+}
+
+.gt-risk-high {
+    background-color: #FDE8E8 !important;
+    color: #DC5353 !important;
+    border: 1px solid #F8B4B4 !important;
+    font-weight: 700 !important;
+    border-radius: 12px !important;
+    padding: 0.15rem 0.55rem !important;
+}
+
 .gt-risk-medium {
-    background-color: #fff3e0;
-    color: #ef6c00;
-    font-weight: 600;
+    background-color: #FEF5E7 !important;
+    color: #C77700 !important;
+    border: 1px solid #FCD9A5 !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
+    padding: 0.15rem 0.55rem !important;
 }
 
 .gt-risk-low {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    font-weight: 500;
+    background-color: #EAF5ED !important;
+    color: #168653 !important;
+    border: 1px solid #B8E2C8 !important;
+    font-weight: 500 !important;
+    border-radius: 12px !important;
+    padding: 0.15rem 0.55rem !important;
 }
 
 .gt-count {
-    color: #1b5e20;
+    color: #123D2B;
+    font-weight: 700;
 }

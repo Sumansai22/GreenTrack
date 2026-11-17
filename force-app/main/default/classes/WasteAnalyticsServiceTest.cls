@@ -53,4 +53,37 @@ private class WasteAnalyticsServiceTest {
         System.assert(!hotspots.isEmpty());
         System.assert(!tableList.isEmpty());
     }
+
+    @IsTest
+    static void testGetUserRoleContextAdmin() {
+        Test.startTest();
+        WasteAnalyticsService.UserRoleInfo info = WasteAnalyticsService.getUserRoleContext();
+        Test.stopTest();
+
+        System.assertNotEquals(null, info);
+        System.assertEquals(true, info.isAuthenticated);
+        System.assertEquals(false, info.isGuest);
+    }
+
+    @IsTest
+    static void testGetUserRoleContextGuest() {
+        User guestUser = [
+            SELECT Id FROM User 
+            WHERE Profile.Name = 'GreenTrack Profile' AND IsActive = true 
+            LIMIT 1
+        ];
+
+        System.runAs(guestUser) {
+            Test.startTest();
+            WasteAnalyticsService.UserRoleInfo info = WasteAnalyticsService.getUserRoleContext();
+            Test.stopTest();
+
+            System.assertNotEquals(null, info);
+            System.assertEquals(true, info.isGuest);
+            System.assertEquals(false, info.isAuthenticated);
+            System.assertEquals(false, info.isAdmin);
+            System.assertEquals(false, info.isTeamLeader);
+            System.assertEquals(false, info.isWorker);
+        }
+    }
 }

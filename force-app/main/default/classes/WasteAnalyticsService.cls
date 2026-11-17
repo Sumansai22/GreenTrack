@@ -49,6 +49,71 @@ public with sharing class WasteAnalyticsService {
         @AuraEnabled public Decimal complianceRatePercent { get; set; }
     }
 
+    public class UserRoleInfo {
+        @AuraEnabled public Boolean isGuest { get; set; }
+        @AuraEnabled public Boolean isAuthenticated { get; set; }
+        @AuraEnabled public Boolean isAdmin { get; set; }
+        @AuraEnabled public Boolean isTeamLeader { get; set; }
+        @AuraEnabled public Boolean isWorker { get; set; }
+        @AuraEnabled public Boolean isResident { get; set; }
+        @AuraEnabled public String userName { get; set; }
+        @AuraEnabled public String activeRole { get; set; }
+    }
+
+    /**
+     * @description Returns current user role, authentication state, and permissible views
+     */
+    @AuraEnabled(cacheable=true)
+    public static UserRoleInfo getUserRoleContext() {
+        UserRoleInfo info = new UserRoleInfo();
+        String userType = UserInfo.getUserType();
+        info.userName = UserInfo.getName();
+        info.isGuest = (userType == 'Guest');
+        info.isAuthenticated = !info.isGuest;
+        info.isAdmin = false;
+        info.isTeamLeader = false;
+        info.isWorker = false;
+        info.isResident = false;
+        info.activeRole = 'guest';
+
+        if (info.isGuest) {
+            return info;
+        }
+
+        // Query permission sets assigned to current user
+        Set<String> permSets = new Set<String>();
+        for (PermissionSetAssignment psa : [
+            SELECT PermissionSet.Name 
+            FROM PermissionSetAssignment 
+            WHERE AssigneeId = :UserInfo.getUserId()
+        ]) {
+            permSets.add(psa.PermissionSet.Name);
+        }
+
+        // Check profile as fallback for SysAdmin
+        String profileName = [SELECT Name FROM Profile WHERE Id = :UserInfo.getProfileId()].Name;
+
+        if (permSets.contains('GreenTrack_Municipal_Admin') || profileName == 'System Administrator') {
+            info.isAdmin = true;
+            info.isResident = true;
+            info.activeRole = 'admin';
+        } else if (permSets.contains('GreenTrack_Team_Leader')) {
+            info.isTeamLeader = true;
+            info.activeRole = 'team_leader';
+        } else if (permSets.contains('GreenTrack_Cleaning_Worker')) {
+            info.isWorker = true;
+            info.activeRole = 'worker';
+        } else if (permSets.contains('GreenTrack_Resident')) {
+            info.isResident = true;
+            info.activeRole = 'resident';
+        } else {
+            info.isResident = true;
+            info.activeRole = 'resident';
+        }
+
+        return info;
+    }
+
     /**
      * @description Calculates real-time KPI overview metrics from database records
      */

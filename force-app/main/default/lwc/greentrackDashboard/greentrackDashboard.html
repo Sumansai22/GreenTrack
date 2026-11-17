@@ -1,64 +1,422 @@
 <template>
-    <div class="greentrack-container">
-        <!-- Header Banner -->
-        <header class="gt-header slds-p-around_medium slds-m-bottom_medium">
-            <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread">
-                <div class="slds-media slds-media_center">
-                    <div class="slds-media__figure">
-                        <span class="gt-brand-icon">🌿</span>
+    <div class="greentrack-app-wrapper">
+        <!-- Main Brand Navigation Bar -->
+        <header class="gt-main-navbar">
+            <div class="gt-navbar-container slds-grid slds-grid_vertical-align-center slds-grid_align-spread">
+                <!-- Brand Logo & Identity -->
+                <div class="gt-brand-group slds-media slds-media_center" onclick={setLandingMode}>
+                    <div class="gt-logo-circle slds-media__figure">
+                        <span class="gt-logo-icon">🌿</span>
                     </div>
                     <div class="slds-media__body">
-                        <h1 class="slds-text-heading_medium gt-app-title">GreenTrack</h1>
-                        <p class="slds-text-body_small gt-app-subtitle">Smart Waste Management & Sustainability Platform</p>
+                        <div class="gt-brand-title">GreenTrack</div>
+                        <div class="gt-brand-tagline">Building Cleaner Communities, Creating a Greener Tomorrow</div>
                     </div>
                 </div>
-                <div class="gt-header-actions slds-grid slds-grid_vertical-align-center">
-                    <lightning-badge label="Municipal Cloud Active" class="gt-status-badge slds-m-right_small"></lightning-badge>
-                    <lightning-button variant="brand" label="Report Waste Issue" icon-name="utility:add" onclick={handleNewComplaintClick}></lightning-button>
-                </div>
+
+                <!-- Role Switcher & Navigation Pills -->
+                <nav class="gt-role-switcher slds-grid slds-grid_vertical-align-center">
+                    <button class="gt-nav-pill" data-active={isLandingView} onclick={setLandingMode}>
+                        <lightning-icon icon-name="utility:home" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                        Portal Home
+                    </button>
+
+                    <!-- Authenticated Resident Hub Access -->
+                    <template if:true={canAccessResident}>
+                        <button class="gt-nav-pill" data-active={isResidentView} onclick={setResidentMode}>
+                            <lightning-icon icon-name="utility:user" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                            Resident Hub
+                        </button>
+                    </template>
+
+                    <!-- Authenticated Admin Access -->
+                    <template if:true={canAccessAdmin}>
+                        <button class="gt-nav-pill" data-active={isAdminView} onclick={setAdminMode}>
+                            <lightning-icon icon-name="utility:dashboard" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                            Admin Console
+                        </button>
+                    </template>
+
+                    <!-- Authenticated Team Leader Access -->
+                    <template if:true={canAccessTeamLeader}>
+                        <button class="gt-nav-pill" data-active={isTeamLeaderView} onclick={setTeamLeaderMode}>
+                            <lightning-icon icon-name="utility:groups" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                            Team Leader
+                        </button>
+                    </template>
+
+                    <!-- Authenticated Worker Access -->
+                    <template if:true={canAccessWorker}>
+                        <button class="gt-nav-pill" data-active={isWorkerView} onclick={setWorkerMode}>
+                            <lightning-icon icon-name="utility:custom_apps" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                            Field Worker
+                        </button>
+                    </template>
+
+                    <!-- Report Issue CTA Button -->
+                    <button class="gt-cta-button slds-m-left_small" onclick={handleReportWasteCTA}>
+                        Report Issue
+                    </button>
+
+                    <!-- Authentication Controls -->
+                    <template if:true={isGuestUser}>
+                        <button class="gt-btn-primary slds-m-left_small" onclick={handleLoginClick}>
+                            <lightning-icon icon-name="utility:login" size="xx-small" variant="inverse" class="slds-m-right_xx-small"></lightning-icon>
+                            Sign In
+                        </button>
+                    </template>
+                    <template if:true={isAuthenticated}>
+                        <div class="gt-user-pill slds-m-left_small slds-grid slds-grid_vertical-align-center">
+                            <span class="gt-user-name slds-m-right_xx-small">👤 {userName}</span>
+                            <button class="gt-logout-btn" title="Sign Out" onclick={handleLogoutClick}>
+                                <lightning-icon icon-name="utility:logout" size="xx-small"></lightning-icon>
+                            </button>
+                        </div>
+                    </template>
+                </nav>
             </div>
         </header>
 
-        <!-- Navigation Tabs -->
-        <lightning-tabset variant="scoped" active-tab-value={activeTab}>
-            <lightning-tab label="Command Center" value="overview" icon-name="standard:dashboard">
-                <c-admin-overview onnavigate={handleNavigate}></c-admin-overview>
-            </lightning-tab>
-            
-            <lightning-tab label="Complaints Portal" value="complaints" icon-name="standard:case">
-                <div class="slds-grid slds-wrap slds-gutters">
-                    <div class="slds-col slds-size_1-of-1 slds-large-size_7-of-12">
+        <!-- ========================================== -->
+        <!-- VIEW 1: PUBLIC LANDING PAGE (SaaS PORTAL)  -->
+        <!-- ========================================== -->
+        <template if:true={isLandingView}>
+            <div class="gt-landing-page">
+                <!-- Hero Section -->
+                <section class="gt-hero-section">
+                    <div class="gt-hero-container">
+                        <div class="gt-hero-badge">Smart Municipal Waste Management</div>
+                        <h1 class="gt-hero-headline">Building Cleaner Communities, One Action at a Time.</h1>
+                        <p class="gt-hero-subtext">
+                            GreenTrack centralizes urban waste collection, public cleanliness reporting, and doorstep recycling into a unified, intelligent Salesforce platform for municipal authorities and residents.
+                        </p>
+                        <div class="gt-hero-actions slds-grid slds-wrap">
+                            <button class="gt-btn-primary slds-m-right_small slds-m-bottom_small" onclick={handleReportWasteCTA}>
+                                <lightning-icon icon-name="utility:add" size="x-small" variant="inverse" class="slds-m-right_xx-small"></lightning-icon>
+                                Report Waste Issue
+                            </button>
+                            <button class="gt-btn-secondary slds-m-bottom_small" onclick={handleRecyclingCTA}>
+                                <lightning-icon icon-name="utility:recycle" size="x-small" class="slds-m-right_xx-small"></lightning-icon>
+                                Schedule Bulk Recycling
+                            </button>
+                            <button class="gt-btn-outline slds-m-left_small slds-m-bottom_small" onclick={handleTrackComplaintsCTA}>
+                                <lightning-icon icon-name="utility:search" size="x-small" class="slds-m-right_xx-small"></lightning-icon>
+                                Track Complaint Status
+                            </button>
+                        </div>
+
+                        <!-- Real-time Statistics Strip (Live Salesforce Data) -->
+                        <div class="gt-stats-strip slds-grid slds-wrap slds-gutters slds-m-top_x-large">
+                            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_small">
+                                <div class="gt-stat-card">
+                                    <div class="gt-stat-number">{metrics.totalComplaints}</div>
+                                    <div class="gt-stat-label">Total Complaints Logged</div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_small">
+                                <div class="gt-stat-card">
+                                    <div class="gt-stat-number gt-color-emerald">{metrics.resolvedComplaints}</div>
+                                    <div class="gt-stat-label">Issues Resolved</div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_small">
+                                <div class="gt-stat-card">
+                                    <div class="gt-stat-number gt-color-mint">{metrics.totalRecycledKg} kg</div>
+                                    <div class="gt-stat-label">Recycled Waste Diverted</div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_small">
+                                <div class="gt-stat-card">
+                                    <div class="gt-stat-number">{metrics.resolutionRatePercent}%</div>
+                                    <div class="gt-stat-label">SLA Compliance & Resolution</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Municipal Waste Management Services Section -->
+                <section class="gt-section-services">
+                    <div class="gt-section-header slds-text-align_center">
+                        <div class="gt-section-pretitle">Comprehensive Municipal Solutions</div>
+                        <h2 class="gt-section-title">Smart Services for a Cleaner Tomorrow</h2>
+                        <p class="gt-section-subtitle">Every report submitted triggers intelligent routing, team dispatch, and transparent SLA tracking.</p>
+                    </div>
+
+                    <div class="slds-grid slds-wrap slds-gutters gt-services-grid">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_medium">
+                            <div class="gt-service-card" onclick={handleReportWasteCTA}>
+                                <div class="gt-service-icon-box">🗑️</div>
+                                <h3 class="gt-service-name">Illegal Dumping & Overflowing Bins</h3>
+                                <p class="gt-service-desc">Instant reporting with mobile GPS location capture, severity classification, and automated routing to nearby collection teams.</p>
+                                <span class="gt-service-link">Submit a report →</span>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_medium">
+                            <div class="gt-service-card" onclick={handleRecyclingCTA}>
+                                <div class="gt-service-icon-box">♻️</div>
+                                <h3 class="gt-service-name">Doorstep Bulk Recycling Pickups</h3>
+                                <p class="gt-service-desc">Book hassle-free doorstep pickup for paper, plastics, glass, e-waste, and scrap metals to divert municipal landfill waste.</p>
+                                <span class="gt-service-link">Book pickup →</span>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_medium">
+                            <div class="gt-service-card" onclick={handleTrackComplaintsCTA}>
+                                <div class="gt-service-icon-box">📍</div>
+                                <h3 class="gt-service-name">Real-Time SLA & Resolution Tracking</h3>
+                                <p class="gt-service-desc">Track ticket resolution status from submission to field clearance with photo evidence and resolution timestamps.</p>
+                                <span class="gt-service-link">Track status →</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- How GreenTrack Works Section -->
+                <section class="gt-section-workflow">
+                    <div class="gt-section-header slds-text-align_center">
+                        <div class="gt-section-pretitle">Automated Lifecycle</div>
+                        <h2 class="gt-section-title">How GreenTrack Works</h2>
+                    </div>
+
+                    <div class="slds-grid slds-wrap slds-gutters gt-workflow-steps">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4 slds-m-bottom_medium">
+                            <div class="gt-step-card">
+                                <div class="gt-step-num">01</div>
+                                <h4 class="gt-step-title">Resident Reports</h4>
+                                <p class="gt-step-text">Submit waste issue details with photo evidence, area tag, and GPS coordinates.</p>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4 slds-m-bottom_medium">
+                            <div class="gt-step-card">
+                                <div class="gt-step-num">02</div>
+                                <h4 class="gt-step-title">Automated Dispatch</h4>
+                                <p class="gt-step-text">Salesforce Flow and Apex automatically assign the complaint to the least-loaded area team.</p>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4 slds-m-bottom_medium">
+                            <div class="gt-step-card">
+                                <div class="gt-step-num">03</div>
+                                <h4 class="gt-step-title">Field Clearance</h4>
+                                <p class="gt-step-text">Cleaning workers receive mobile tasks, clear waste, and record resolution notes.</p>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4 slds-m-bottom_medium">
+                            <div class="gt-step-card">
+                                <div class="gt-step-num">04</div>
+                                <h4 class="gt-step-title">Verified Resolution</h4>
+                                <p class="gt-step-text">SLA compliance is logged and residents receive instant status notifications.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Environmental Impact & Awareness Banner -->
+                <section class="gt-section-impact">
+                    <div class="gt-impact-box slds-grid slds-wrap slds-grid_vertical-align-center">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12">
+                            <h2 class="gt-impact-title">Together for a Zero-Waste City</h2>
+                            <p class="gt-impact-text">
+                                Over {metrics.totalRecycledKg} kg of recyclables collected. Every report resolved preserves urban hygiene, prevents illegal dumping, and supports municipal circular economy goals.
+                            </p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-text-align_right">
+                            <button class="gt-btn-primary-invert" onclick={handleReportWasteCTA}>
+                                Join Community Action
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Municipal Support & Footer -->
+                <footer class="gt-landing-footer">
+                    <div class="slds-grid slds-wrap slds-grid_align-spread">
+                        <div>
+                            <div class="gt-footer-logo">🌿 GreenTrack</div>
+                            <p class="gt-footer-sub">Smart Waste Management & Sustainability Platform</p>
+                            <p class="gt-footer-sub">Municipal Administration & Citizen Services</p>
+                        </div>
+                        <div class="gt-footer-links">
+                            <span class="gt-footer-item">Help & Support</span>
+                            <span class="gt-footer-item">Municipal Bylaws</span>
+                            <span class="gt-footer-item">Privacy Policy</span>
+                            <span class="gt-footer-item">Terms of Service</span>
+                        </div>
+                    </div>
+                    <div class="gt-footer-copyright">
+                        © 2026 GreenTrack Platform. Built on Salesforce Experience Cloud.
+                    </div>
+                </footer>
+            </div>
+        </template>
+
+        <!-- ========================================== -->
+        <!-- VIEW 2: RESIDENT DASHBOARD & COMMUNITY HUB -->
+        <!-- ========================================== -->
+        <template if:true={isResidentView}>
+            <div class="gt-resident-container slds-p-around_medium">
+                <!-- Resident Welcome Header -->
+                <div class="gt-welcome-banner slds-m-bottom_medium">
+                    <div class="slds-grid slds-wrap slds-grid_vertical-align-center slds-grid_align-spread">
+                        <div>
+                            <h2 class="gt-welcome-title">Welcome to Your Resident Community Hub</h2>
+                            <p class="gt-welcome-sub">Report local waste problems, track ticket resolution, and manage doorstep recycling.</p>
+                        </div>
+                        <div class="gt-welcome-actions slds-m-top_small">
+                            <button class="gt-btn-primary slds-m-right_small" onclick={handleReportWasteCTA}>
+                                + Report New Waste Issue
+                            </button>
+                            <button class="gt-btn-secondary" onclick={handleRecyclingCTA}>
+                                ♻️ Schedule Recycling
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Resident Personal Metrics -->
+                    <div class="slds-grid slds-wrap slds-gutters slds-m-top_medium">
+                        <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_small">
+                            <div class="gt-mini-metric">
+                                <div class="gt-mini-val">{metrics.totalComplaints}</div>
+                                <div class="gt-mini-lbl">Total Registered</div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_small">
+                            <div class="gt-mini-metric">
+                                <div class="gt-mini-val gt-color-amber">{metrics.pendingComplaints}</div>
+                                <div class="gt-mini-lbl">Pending / Dispatched</div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_small">
+                            <div class="gt-mini-metric">
+                                <div class="gt-mini-val gt-color-emerald">{metrics.resolvedComplaints}</div>
+                                <div class="gt-mini-lbl">Resolved & Cleared</div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_small">
+                            <div class="gt-mini-metric">
+                                <div class="gt-mini-val gt-color-mint">{metrics.recyclingRequests}</div>
+                                <div class="gt-mini-lbl">Recycling Pickups</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resident Functional Tabs -->
+                <lightning-tabset variant="scoped" active-tab-value={residentActiveTab}>
+                    <lightning-tab label="My Complaints & Tracking" value="complaints" icon-name="standard:case">
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-1 slds-large-size_7-of-12">
+                                <c-complaint-list onselectcomplaint={handleSelectComplaint}></c-complaint-list>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-large-size_5-of-12">
+                                <c-complaint-details complaint-id={selectedComplaintId} oncomplaintupdated={handleComplaintUpdated}></c-complaint-details>
+                            </div>
+                        </div>
+                    </lightning-tab>
+
+                    <lightning-tab label="Report a Waste Problem" value="new_report" icon-name="utility:new">
+                        <c-complaint-registration oncomplaintsubmitted={handleComplaintSubmitted}></c-complaint-registration>
+                    </lightning-tab>
+
+                    <lightning-tab label="Doorstep Bulk Recycling" value="recycling" icon-name="standard:channel_program_levels">
+                        <c-recycling-management></c-recycling-management>
+                    </lightning-tab>
+                </lightning-tabset>
+            </div>
+        </template>
+
+        <!-- ========================================== -->
+        <!-- VIEW 3: MUNICIPAL ADMINISTRATOR CONSOLE    -->
+        <!-- ========================================== -->
+        <template if:true={isAdminView}>
+            <div class="gt-admin-container slds-p-around_medium">
+                <div class="gt-role-header slds-m-bottom_medium">
+                    <h2 class="gt-role-title">Municipal Administrator Command Center</h2>
+                    <p class="gt-role-sub">Executive oversight, automated team dispatch, hotspot monitoring, and sustainability analytics.</p>
+                </div>
+
+                <lightning-tabset variant="scoped" active-tab-value={activeTab}>
+                    <lightning-tab label="Command Overview" value="overview" icon-name="standard:dashboard">
+                        <c-admin-overview onnavigate={handleNavigate}></c-admin-overview>
+                    </lightning-tab>
+
+                    <lightning-tab label="Complaints Operations" value="complaints" icon-name="standard:case">
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-1 slds-large-size_7-of-12">
+                                <c-complaint-list onselectcomplaint={handleSelectComplaint}></c-complaint-list>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-large-size_5-of-12">
+                                <c-complaint-details complaint-id={selectedComplaintId} oncomplaintupdated={handleComplaintUpdated}></c-complaint-details>
+                            </div>
+                        </div>
+                    </lightning-tab>
+
+                    <lightning-tab label="Team Dispatch" value="dispatch" icon-name="standard:team_member">
+                        <c-team-assignment></c-team-assignment>
+                    </lightning-tab>
+
+                    <lightning-tab label="Cleaning Workers" value="workers" icon-name="standard:contact">
+                        <c-worker-management></c-worker-management>
+                    </lightning-tab>
+
+                    <lightning-tab label="Bulk Recycling" value="recycling" icon-name="standard:channel_program_levels">
+                        <c-recycling-management></c-recycling-management>
+                    </lightning-tab>
+
+                    <lightning-tab label="Waste Hotspot Matrix" value="hotspots" icon-name="standard:location">
+                        <c-waste-hotspot-dashboard></c-waste-hotspot-dashboard>
+                    </lightning-tab>
+
+                    <lightning-tab label="Sustainability KPI" value="analytics" icon-name="standard:report">
+                        <c-sustainability-analytics></c-sustainability-analytics>
+                    </lightning-tab>
+                </lightning-tabset>
+            </div>
+        </template>
+
+        <!-- ========================================== -->
+        <!-- VIEW 4: TEAM LEADER OPERATIONS DASHBOARD   -->
+        <!-- ========================================== -->
+        <template if:true={isTeamLeaderView}>
+            <div class="gt-leader-container slds-p-around_medium">
+                <div class="gt-role-header slds-m-bottom_medium">
+                    <h2 class="gt-role-title">Collection Team Leader Console</h2>
+                    <p class="gt-role-sub">Team workload management, cleaning worker allocations, and resolution verification.</p>
+                </div>
+
+                <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
                         <c-complaint-list onselectcomplaint={handleSelectComplaint}></c-complaint-list>
                     </div>
-                    <div class="slds-col slds-size_1-of-1 slds-large-size_5-of-12">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12">
                         <c-complaint-details complaint-id={selectedComplaintId} oncomplaintupdated={handleComplaintUpdated}></c-complaint-details>
                     </div>
                 </div>
-            </lightning-tab>
 
-            <lightning-tab label="Report Issue" value="new_report" icon-name="utility:new">
-                <c-complaint-registration oncomplaintsubmitted={handleComplaintSubmitted}></c-complaint-registration>
-            </lightning-tab>
+                <div class="slds-m-top_medium">
+                    <c-team-assignment></c-team-assignment>
+                </div>
+            </div>
+        </template>
 
-            <lightning-tab label="Team Dispatch" value="dispatch" icon-name="standard:team_member">
-                <c-team-assignment></c-team-assignment>
-            </lightning-tab>
+        <!-- ========================================== -->
+        <!-- VIEW 5: MOBILE-FIRST CLEANING WORKER VIEW  -->
+        <!-- ========================================== -->
+        <template if:true={isWorkerView}>
+            <div class="gt-worker-container slds-p-around_medium">
+                <div class="gt-role-header slds-m-bottom_medium">
+                    <h2 class="gt-role-title">Cleaning Worker Field Tasks</h2>
+                    <p class="gt-role-sub">Mobile field clearance task queue, ticket details, and quick resolution logging.</p>
+                </div>
 
-            <lightning-tab label="Cleaning Workers" value="workers" icon-name="standard:contact">
-                <c-worker-management></c-worker-management>
-            </lightning-tab>
-
-            <lightning-tab label="Bulk Recycling" value="recycling" icon-name="standard:channel_program_levels">
-                <c-recycling-management></c-recycling-management>
-            </lightning-tab>
-
-            <lightning-tab label="Hotspot Matrix" value="hotspots" icon-name="standard:location">
-                <c-waste-hotspot-dashboard></c-waste-hotspot-dashboard>
-            </lightning-tab>
-
-            <lightning-tab label="Sustainability KPI" value="analytics" icon-name="standard:report">
-                <c-sustainability-analytics></c-sustainability-analytics>
-            </lightning-tab>
-        </lightning-tabset>
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_6-of-12">
+                        <c-complaint-list onselectcomplaint={handleSelectComplaint}></c-complaint-list>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_6-of-12">
+                        <c-complaint-details complaint-id={selectedComplaintId} oncomplaintupdated={handleComplaintUpdated}></c-complaint-details>
+                    </div>
+                </div>
+            </div>
+        </template>
     </div>
 </template>
